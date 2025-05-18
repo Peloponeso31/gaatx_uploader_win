@@ -108,6 +108,7 @@ public partial class SettingsViewModel : ObservableValidator
     {
         ClearErrors();
         ValidateAllProperties();
+        
         Console.WriteLine("---------");
         foreach (var error in GetErrors())
         {

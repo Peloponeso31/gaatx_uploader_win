@@ -189,7 +189,8 @@
                 <StackPanel Margin="0,5,5,5">
                     <ui:Button Appearance="Secondary"
                                Content="Reiniciar"
-                               Icon="{ui:SymbolIcon ArrowReset24}"/>
+                               Icon="{ui:SymbolIcon ArrowReset24}"
+                               Visibility="Collapsed"/>
                 </StackPanel>
                 
                 <StackPanel Margin="0,5,5,5">
