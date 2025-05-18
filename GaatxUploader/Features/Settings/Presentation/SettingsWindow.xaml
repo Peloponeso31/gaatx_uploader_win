@@ -1,0 +1,192 @@
+<ui:FluentWindow x:Class="GaatxUploader.Features.Settings.Presentation.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:GaatxUploader.Features.Settings.Presentation"
+        mc:Ignorable="d"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        d:DesignWidth="1024"
+        d:DesignHeight="768"
+        MinWidth="1024"
+        MinHeight="768"
+        Title="SettingsWindow">
+    
+    <ui:FluentWindow.DataContext>
+        <local:SettingsViewModel/>
+    </ui:FluentWindow.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <ui:TitleBar Grid.Row="0"
+                     Title="Herramienta para cargar calificaciones"
+                     Icon="{ui:SymbolIcon DocumentTableCheckmark24}"/>
+        
+        <StackPanel Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <ui:TextBlock Text="Datos de docente, evaluación y grupo"
+                              Appearance="Primary"
+                              FontTypography="Title"
+                              Margin="5"/>
+                
+                <ui:Card Grid.Column="0"
+                         Grid.Row="1"
+                         Margin="5,5,2.5,5">
+                    <StackPanel>
+                        <ui:TextBlock Text="Inicio de sesión"
+                                      Appearance="Primary"
+                                      FontTypography="Subtitle"
+                                      Margin="3"/>
+                        
+                        <StackPanel Margin="0,3,0,0">
+                            <ui:TextBox PlaceholderText="Numero de docente"/>    
+                        </StackPanel>
+                        
+                        <StackPanel Margin="0,3,0,0">
+                            <ui:PasswordBox PlaceholderText="Contraseña"/>    
+                        </StackPanel>
+                    </StackPanel>
+                </ui:Card>
+                
+                <ui:Card Grid.Column="1"
+                         Grid.Row="1"
+                         Margin="2.5,5,5,5">
+                    <StackPanel>
+                        <ui:TextBlock Text="Evaluación"
+                                      Appearance="Primary"
+                                      FontTypography="Subtitle"
+                                      Margin="3"/>
+                        
+                        <Grid Margin="0,3,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,3,0">
+                                <ui:TextBox PlaceholderText="ID del grupo"/>
+                            </StackPanel>
+                            <ui:TextBox Grid.Column="1" PlaceholderText="ID del criterio"/>
+                        </Grid>
+                        
+                        <StackPanel Margin="0,3,0,0">
+                            <ui:NumberBox PlaceholderText="Evaluación"
+                                          Minimum="1"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ui:Card>
+                
+                <ui:Card Grid.Column="0"
+                         Grid.Row="2"
+                         Grid.ColumnSpan="2"
+                         Margin="5,0,5,5">
+                    <StackPanel>
+                        <ui:TextBlock Text="Datos deseados de la hoja de cálculo"
+                                      Appearance="Primary"
+                                      FontTypography="Subtitle"
+                                      Margin="3"/>
+                        
+                        <StackPanel Margin="0,0,0,0"
+                                    Orientation="Horizontal">
+                            <ui:Button Content="Subir hoja de calculo"
+                                       Icon="{ui:SymbolIcon ArrowUpload24}"
+                                       Command="{Binding CargarExcelCommand}"/>
+                            
+                            <ui:TextBlock Margin="3,0,0,0"
+                                          VerticalAlignment="Center">
+                                <ui:TextBlock.Text>
+                                    <MultiBinding StringFormat="Archivo subido: {0}">
+                                        <Binding Path="Filename"
+                                                 TargetNullValue="No se ha subido archivo"/>
+                                    </MultiBinding>
+                                </ui:TextBlock.Text>
+                            </ui:TextBlock>
+                            
+                        </StackPanel>
+                        
+                        <Grid Margin="0,3,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,3,0">
+                                <Label Content="Hoja donde se encuentran las caliificaciones"
+                                       Target="{Binding ElementName=HojaComboBox}"/>
+                                <ComboBox Name="HojaComboBox"
+                                          IsEnabled="{Binding ExcelCargado}"
+                                          SelectedItem="{Binding SelectedWorksheet}"
+                                          ItemsSource="{Binding Spreadsheet.Workbook.Worksheets}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Margin="0,0,3,0"
+                                        Grid.Column="1">
+                                <Label Content="Columna que contiene los numeros de control"
+                                       Target="{Binding ElementName=ControlComboBox}"/>
+                                <ComboBox Name="ControlComboBox"
+                                          ItemsSource="{Binding DataTable.Columns}"
+                                          DisplayMemberPath="ColumnName"/>
+                            </StackPanel>
+                            
+                            <StackPanel Margin="0,0,3,0"
+                                        Grid.Column="2">
+                                <Label Content="Columna que contiene las calificaciones a asignar"
+                                       Target="{Binding ElementName=CalificacionComboBox}"/>
+                                <ComboBox Name="CalificacionComboBox"
+                                          ItemsSource="{Binding DataTable.Columns}"
+                                          DisplayMemberPath="ColumnName"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </ui:Card>
+            </Grid>
+        </StackPanel>
+        
+        
+        <ui:DataGrid Grid.Row="2" ItemsSource="{Binding DataTable}"
+                     AutoGenerateColumns="True"
+                     IsReadOnly="True"/>
+        
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <StackPanel Margin="0,5,5,5">
+                    <ui:Button Appearance="Secondary"
+                               Content="Reiniciar"
+                               Icon="{ui:SymbolIcon ArrowReset24}"/>
+                </StackPanel>
+                
+                <StackPanel Margin="0,5,5,5">
+                    <ui:Button Appearance="Primary"
+                               Content="Subir calificaciones"
+                               Icon="{ui:SymbolIcon ArrowUpload20}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

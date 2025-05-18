@@ -10,7 +10,17 @@
 
     <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+      <PackageReference Include="EPPlus" Version="8.0.5" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.4.25258.110" />
+      <PackageReference Include="Selenium.WebDriver" Version="4.32.0" />
       <PackageReference Include="WPF-UI" Version="4.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Settings\Data\" />
+      <Folder Include="Features\Settings\Domain\" />
+      <Folder Include="Services\Contracts\" />
+      <Folder Include="Services\Implementations\" />
     </ItemGroup>
 
 </Project>
