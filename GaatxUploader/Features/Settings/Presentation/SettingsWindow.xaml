@@ -59,11 +59,15 @@
                                       Margin="3"/>
                         
                         <StackPanel Margin="0,3,0,0">
-                            <ui:TextBox PlaceholderText="Numero de docente"/>    
+                            <ui:TextBox PlaceholderText="Numero de docente"
+                                        Text="{Binding NumeroDocente}"
+                                        Icon="{ui:SymbolIcon Person32}"/>    
                         </StackPanel>
                         
                         <StackPanel Margin="0,3,0,0">
-                            <ui:PasswordBox PlaceholderText="Contraseña"/>    
+                            <ui:PasswordBox PlaceholderText="Contraseña"
+                                            PasswordChanged="PasswordBox_OnPasswordChanged"
+                                            Icon="{ui:SymbolIcon Password24}"/>
                         </StackPanel>
                     </StackPanel>
                 </ui:Card>
@@ -83,14 +87,18 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,3,0">
-                                <ui:TextBox PlaceholderText="ID del grupo"/>
+                                <ui:TextBox PlaceholderText="ID del grupo"
+                                            Text="{Binding Grupo}"/>
                             </StackPanel>
-                            <ui:TextBox Grid.Column="1" PlaceholderText="ID del criterio"/>
+                            <ui:TextBox Grid.Column="1"
+                                        PlaceholderText="ID del criterio"
+                                        Text="{Binding Criterio}"/>
                         </Grid>
                         
                         <StackPanel Margin="0,3,0,0">
                             <ui:NumberBox PlaceholderText="Evaluación"
-                                          Minimum="1"/>
+                                          Minimum="1"
+                                          Value="{Binding Evaluacion,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </StackPanel>
                 </ui:Card>
@@ -144,7 +152,8 @@
                                        Target="{Binding ElementName=ControlComboBox}"/>
                                 <ComboBox Name="ControlComboBox"
                                           ItemsSource="{Binding DataTable.Columns}"
-                                          DisplayMemberPath="ColumnName"/>
+                                          DisplayMemberPath="ColumnName"
+                                          SelectedItem="{Binding ControlColumn}"/>
                             </StackPanel>
                             
                             <StackPanel Margin="0,0,3,0"
@@ -153,7 +162,8 @@
                                        Target="{Binding ElementName=CalificacionComboBox}"/>
                                 <ComboBox Name="CalificacionComboBox"
                                           ItemsSource="{Binding DataTable.Columns}"
-                                          DisplayMemberPath="ColumnName"/>
+                                          DisplayMemberPath="ColumnName"
+                                          SelectedItem="{Binding CalificacionesColumn}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -162,7 +172,8 @@
         </StackPanel>
         
         
-        <ui:DataGrid Grid.Row="2" ItemsSource="{Binding DataTable}"
+        <ui:DataGrid Grid.Row="2"
+                     ItemsSource="{Binding DataTable}"
                      AutoGenerateColumns="True"
                      IsReadOnly="True"/>
         
@@ -184,7 +195,8 @@
                 <StackPanel Margin="0,5,5,5">
                     <ui:Button Appearance="Primary"
                                Content="Subir calificaciones"
-                               Icon="{ui:SymbolIcon ArrowUpload20}"/>
+                               Icon="{ui:SymbolIcon ArrowUpload20}"
+                               Command="{Binding UploadCommand}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

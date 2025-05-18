@@ -1,19 +1,58 @@
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.IO;
+using GaatxUploader.Services.Contracts;
+using GaatxUploader.Validation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using OfficeOpenXml;
 
 namespace GaatxUploader.Features.Settings.Presentation;
 
-public partial class SettingsViewModel : ObservableObject
+public partial class SettingsViewModel : ObservableValidator
 {
+    private readonly IBrowserAutomationService _browserAutomationService = App.Current.Services.GetService<IBrowserAutomationService>()!; 
+    
+    
+    [ObservableProperty]
+    [Required]
+    private string _numeroDocente;
+    
+    [ObservableProperty]
+    [Required]
+    private string _password;
+    
+    [ObservableProperty]
+    [Required]
+    private string _grupo;
+    
+    [ObservableProperty]
+    [Required]
+    private string _criterio;
+    
+    [ObservableProperty]
+    [Required]
+    private string _evaluacion;
+    
+    [ObservableProperty]
+    [Required]
+    private ExcelWorksheet _selectedWorksheet;
+    
+    [ObservableProperty]
+    [Required]
+    [ShouldBeDifferent(nameof(CalificacionesColumn))]
+    private DataColumn _controlColumn;
+    
+    [ObservableProperty]
+    [Required]
+    [ShouldBeDifferent(nameof(ControlColumn))]
+    private DataColumn _calificacionesColumn;
+    
     [ObservableProperty] private string? _filename;
     [ObservableProperty] private ExcelPackage _spreadsheet;
     [ObservableProperty] private bool _excelCargado;
     [ObservableProperty] private bool _isSheetSelected;
-    [ObservableProperty] private ExcelWorksheet _selectedWorksheet;
     [ObservableProperty] private DataTable _dataTable;
 
     [RelayCommand]
@@ -21,8 +60,8 @@ public partial class SettingsViewModel : ObservableObject
     {
         var openFileDialog = new OpenFileDialog
         {
-            Filter = "Excel Files (*.xlsx)|*.xlsx",
-            Title = "Seleccione el archivo de excel donde tiene las calificaciones"
+            Filter = "Archivos de Excel (*.xlsx)|*.xlsx",
+            Title = "Seleccione el archivo de Excel donde tiene las calificaciones"
         };
 
         if (openFileDialog.ShowDialog() ==  true)
@@ -62,5 +101,21 @@ public partial class SettingsViewModel : ObservableObject
         }
 
         DataTable = table;
+    }
+
+    [RelayCommand]
+    void Upload()
+    {
+        ClearErrors();
+        ValidateAllProperties();
+        Console.WriteLine("---------");
+        foreach (var error in GetErrors())
+        {
+            Console.WriteLine(error.ErrorMessage);
+        }
+
+        if (HasErrors) return;
+        var calificaciones = DataTable.DefaultView.ToTable(false, [ControlColumn.ColumnName, CalificacionesColumn.ColumnName]);
+        _browserAutomationService.UploadDataTable(calificaciones, NumeroDocente, Password, Grupo, Criterio, Evaluacion);
     }
 }

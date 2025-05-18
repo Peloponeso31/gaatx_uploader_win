@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using GaatxUploader.Services.Contracts;
+using GaatxUploader.Services.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
 using Wpf.Ui.Appearance;
@@ -25,7 +27,7 @@ public partial class App : Application
     private static IServiceProvider BuildServiceProvider()
     {
         var services = new ServiceCollection();
-        
+        services.AddSingleton<IBrowserAutomationService, BrowserAutomationService>();
         return services.BuildServiceProvider();
     }
 }

@@ -19,8 +19,6 @@
     <ItemGroup>
       <Folder Include="Features\Settings\Data\" />
       <Folder Include="Features\Settings\Domain\" />
-      <Folder Include="Services\Contracts\" />
-      <Folder Include="Services\Implementations\" />
     </ItemGroup>
 
 </Project>

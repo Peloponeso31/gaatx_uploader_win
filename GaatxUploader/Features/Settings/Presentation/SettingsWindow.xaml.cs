@@ -21,4 +21,11 @@ public partial class SettingsWindow : FluentWindow
         var first = worksheet.Cells[1, worksheet.Dimension.Start.Column, 1, worksheet.Dimension.Start.Column];
         e.Accepted = first.Any(cell => Equals(item, cell));
     }
+
+    private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+    {
+        if (sender is not PasswordBox passwordBox) return;
+        if (DataContext is not SettingsViewModel viewModel) return;
+        viewModel.Password = passwordBox.Password;
+    }
 }
